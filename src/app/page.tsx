@@ -202,35 +202,35 @@ export default function HomePage() {
       <main className="p-8 max-w-6xl mx-auto">
         <div>
           <section className="bg-white shadow-lg p-10 rounded-3xl hover:shadow-xl transition duration-300">
-             <form onSubmit={handleSubmit} className="space-y-12">
-                          <FormDataComponent
-                            formData={formData}
-                            validationErrors={validationErrors}
-                            handleChange={handleChange}
-                            parameterLabels={parameterLabels}
-                            ageUnit={ageUnit}
-                            setAgeUnit={setAgeUnit}
-                          />
-                          <div className="flex justify-center ">
-                            <button
-                              type="submit"
-                              className="bg-purple-600 text-white px-14 py-3 rounded-3xl shadow-lg
+            <form onSubmit={handleSubmit} className="space-y-12">
+              <FormDataComponent
+                formData={formData}
+                validationErrors={validationErrors}
+                handleChange={handleChange}
+                parameterLabels={parameterLabels}
+                ageUnit={ageUnit}
+                setAgeUnit={setAgeUnit}
+              />
+              <div className="flex justify-center ">
+                <button
+                  type="submit"
+                  className="bg-purple-600 text-white px-14 py-3 rounded-3xl shadow-lg
                                 hover:bg-purple-700 hover:shadow-xl transition duration-300 font-bold text-xl"
-                            >
-                              Submit
-                            </button>
-                          </div>
-                          <div className="flex justify-center mt-4">
-                            <button
-                              type="button"
-                              onClick={handleReset}
-                              className="bg-red-500 text-white px-10 py-2 rounded-full shadow-md
+                >
+                  Submit
+                </button>
+              </div>
+              <div className="flex justify-center mt-4">
+                <button
+                  type="button"
+                  onClick={handleReset}
+                  className="bg-red-500 text-white px-10 py-2 rounded-full shadow-md
                                 hover:bg-red-600 transition duration-300 font-semibold text-lg"
-                            >
-                              Reset
-                            </button>
-                          </div>
-                        </form>
+                >
+                  Reset
+                </button>
+              </div>
+            </form>
             <Result
               showResults={showResults}
               scores={scores}
