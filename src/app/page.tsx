@@ -8,6 +8,9 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import About from "@/components/About";
 import Result from "@/components/Result/Result";
 import FormDataComponent from "@/components/FormData/FormData";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function HomePage() {
   const parameterLabels = [
@@ -82,7 +85,7 @@ export default function HomePage() {
   const [prediction, setPrediction] = useState<number | null>(null);
   const [ageUnit, setAgeUnit] = useState<"years" | "months" | "days">("years");
   const [showResults, setShowResults] = useState(false);
-
+const [loading, setLoading] = useState(false);
   const handleReset = () => {
     const resetForm = Object.fromEntries(allFormKeys.map((key) => [key, ""]));
     setFormData(resetForm);
@@ -149,23 +152,62 @@ export default function HomePage() {
     setValidationErrors({ ...validationErrors, [name]: errorMsg });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    const hasErrors = Object.values(validationErrors).some((error) => error);
-    if (hasErrors) {
-      return;
+  const hasErrors = Object.values(validationErrors).some((error) => error);
+  if (hasErrors) return;
+
+  const emptyFields = allFormKeys.filter((key) => !formData[key]);
+  if (emptyFields.length > 0) return;
+
+  setLoading(true);
+
+  // Calculate prediction here
+  const fakePrediction = Math.random() * 100;
+  setPrediction(Number(fakePrediction.toFixed(2)));
+
+  try {
+    const response = await fetch("/api/Form", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (response.ok) {
+      setShowResults(true);
+      toast.success("Patient data saved to database!", {
+        theme: "dark",
+        onClose: () => setLoading(true),
+        autoClose: 5000, 
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
+    } else {
+      toast.error("Failed to save data to database.", {
+        theme: "dark",
+        onClose: () => setLoading(false),
+        autoClose: 5000,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+      });
     }
-
-    const emptyFields = allFormKeys.filter((key) => !formData[key]);
-    if (emptyFields.length > 0) {
-      return;
-    }
-
-    const fakePrediction = Math.random() * 100;
-    setPrediction(Number(fakePrediction.toFixed(2)));
-    setShowResults(true);
-  };
+  } catch (error) {
+    toast.error("Error connecting to database.", {
+      theme: "dark",
+      onClose: () => setLoading(false),
+      autoClose: 5000,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+    });
+  }
+};
 
   const calculateScores = () => {
     return {
@@ -239,6 +281,7 @@ export default function HomePage() {
             />
           </section>
         </div>
+        <ToastContainer />
 
         <div className="text-center mt-10">
           <button
