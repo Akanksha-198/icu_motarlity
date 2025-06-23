@@ -1,27 +1,3 @@
-// import { NextResponse } from "next/server";
-// import connect from "@/utils/db";
-// import Patient from "@/models/Patient";
-// import mongoose from "mongoose";
-
-// export const POST = async (request: Request) => {
-//   try {
-//     await connect();
-//     if (mongoose.connection.readyState === 1) {
-//       console.log("MongoDB is connected");
-//     } else {
-//       console.log("MongoDB is NOT connected");
-//       return new NextResponse("Database not connected", { status: 500 });
-//     }
-
-//     const body = await request.json();
-//     const patient = await Patient.create(body);
-
-//     return new NextResponse(JSON.stringify(patient), { status: 201 });
-//   } catch (err) {
-//     console.error("Database Error", err);
-//     return new NextResponse("Database Error", { status: 500 });
-//   }
-// };
 
 
 
@@ -43,7 +19,6 @@ export const POST = async (request: Request) => {
 
     const body = await request.json();
 
-    // Map numbered keys to schema keys
     const patientData: any = {
       patientname: body.patientname,
       age: Number(body.age),
@@ -57,7 +32,6 @@ export const POST = async (request: Request) => {
       patientData[label] = body[key] !== undefined ? Number(body[key]) : undefined;
     });
 
-    // Optionally add scores if you want
     // if (body.SOFA) patientData.SOFA = Number(body.SOFA);
     // if (body.SAPS) patientData.SAPS = Number(body.SAPS);
     // if (body.Apache) patientData.Apache = Number(body.Apache);
